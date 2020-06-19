@@ -1,8 +1,9 @@
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
-    html {
+    html,textarea {
         font-family: 'Noto Sans KR', sans-serif;
+
     }
 `;
 

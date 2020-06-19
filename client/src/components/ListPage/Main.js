@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import Contents from "./Contents";
 
@@ -19,7 +19,12 @@ export default function MainPage() {
     return (
         <React.Fragment>
             <IntroduceContainer>
-                <IntroductContents>📚 메인 메세지 입니다.</IntroductContents>
+                <IntroductContents>
+                    <span role="img" aria-label="book">
+                        📚
+                    </span>{" "}
+                    메인 메세지 입니다.
+                </IntroductContents>
             </IntroduceContainer>
             <Contents />
         </React.Fragment>

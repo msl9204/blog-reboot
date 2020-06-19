@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled, { keyframes } from "styled-components";
 
 const FromTop = keyframes`
@@ -30,9 +31,11 @@ const HeaderContainer = styled.div`
     justify-content: space-between;
 `;
 
-const HeaderContents = styled.div`
+const HeaderContents = styled(Link)`
     font-size: 1.5rem;
     animation: ${FromTop} 0.5s;
+    text-decoration: none;
+    color: black;
 `;
 
 const AboutPostContainer = styled.div`
@@ -40,6 +43,7 @@ const AboutPostContainer = styled.div`
 `;
 
 const AboutPostContents = styled(HeaderContents)`
+    font-size: 1rem;
     margin: 0 30px;
     animation: ${RightToLeft} 2s;
 `;
@@ -47,7 +51,7 @@ const AboutPostContents = styled(HeaderContents)`
 export default function Header() {
     return (
         <HeaderContainer>
-            <HeaderContents>MinSooBlog</HeaderContents>
+            <HeaderContents to="/">MinSooBlog</HeaderContents>
             <AboutPostContainer>
                 <AboutPostContents>About</AboutPostContents>
                 <AboutPostContents>Post</AboutPostContents>

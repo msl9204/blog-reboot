@@ -1,5 +1,7 @@
 import React from "react";
 import styled, { keyframes } from "styled-components";
+import useDb from "../../hooks/useDb";
+import { Link } from "react-router-dom";
 
 const hoverBar = keyframes`
     0%{opacity: 0}
@@ -13,7 +15,7 @@ const hoverContentsSlide = keyframes`
 
 `;
 
-const ContentsContainer = styled.div`
+const ContentsContainer = styled(Link)`
     display: flex;
     width: 50%;
     height: auto;
@@ -21,6 +23,9 @@ const ContentsContainer = styled.div`
 
     padding-bottom: 30px;
     margin-top: 30px;
+
+    text-decoration: none;
+    color: black;
 
     &:hover {
         color: gray;
@@ -50,33 +55,34 @@ const TimeElements = styled.div`
     color: gray;
 `;
 
+function RenderElements({ id, title, content }) {
+    return (
+        <ContentsContainer to={`/detail/${id}`}>
+            <ContentsContent>
+                <TitleElements>{title}</TitleElements>
+                <TimeElements>{content}</TimeElements>
+            </ContentsContent>
+        </ContentsContainer>
+    );
+}
+
 export default function Contents() {
+    const { Data } = useDb();
+
+    // db.map((doc) => console.log(doc.id, doc.data()));
+
     return (
         <React.Fragment>
-            <ContentsContainer>
-                <ContentsContent>
-                    <TitleElements>~~~ 정리</TitleElements>
-                    <TimeElements>0월0일</TimeElements>
-                </ContentsContent>
-            </ContentsContainer>
-            <ContentsContainer>
-                <ContentsContent>
-                    <TitleElements>~~~ 정리</TitleElements>
-                    <TimeElements>0월0일</TimeElements>
-                </ContentsContent>
-            </ContentsContainer>
-            <ContentsContainer>
-                <ContentsContent>
-                    <TitleElements>~~~ 정리</TitleElements>
-                    <TimeElements>0월0일</TimeElements>
-                </ContentsContent>
-            </ContentsContainer>
-            <ContentsContainer>
-                <ContentsContent>
-                    <TitleElements>~~~ 정리</TitleElements>
-                    <TimeElements>0월0일</TimeElements>
-                </ContentsContent>
-            </ContentsContainer>
+            {Data.map((doc) => {
+                return (
+                    <RenderElements
+                        key={doc.id}
+                        id={doc.id}
+                        title={doc.data().title}
+                        content={doc.data().content}
+                    />
+                );
+            })}
         </React.Fragment>
     );
 }

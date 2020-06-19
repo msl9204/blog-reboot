@@ -28,10 +28,14 @@ function App() {
                     <PageContainer>
                         <Header />
                         <DetailPage />
+                        <GlobalStyle />
                     </PageContainer>
                 </Route>
                 <Route exact path="/edit/">
-                    <EditPage />
+                    <PageContainer>
+                        <EditPage />
+                        <GlobalStyle />
+                    </PageContainer>
                 </Route>
             </Switch>
         </Router>
