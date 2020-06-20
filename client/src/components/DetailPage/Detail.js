@@ -3,6 +3,7 @@ import ReactMarkdown from "react-markdown";
 import styled from "styled-components";
 import useDb from "../../hooks/useDb";
 import { useParams } from "react-router-dom";
+import useStorage from "../../hooks/useStorage";
 
 const DetailContainer = styled.div`
     display: flex;
@@ -40,9 +41,12 @@ export default function DetailPage() {
     const [Item, setItem] = useState("");
     const { id } = useParams();
     const db = useDb();
+    const storage = useStorage();
 
     useEffect(() => {
         db.getContent(id).then((doc) => setItem(doc));
+
+        storage.getMdFile("myFile.txt");
     }, []);
 
     return (
