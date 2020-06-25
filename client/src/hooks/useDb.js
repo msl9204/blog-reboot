@@ -39,5 +39,19 @@ export default function useDb() {
             });
     };
 
-    return { Data, getContent };
+    const writeContent = ({ title, content }) => {
+        const postRef = firestore_db.collection("posts");
+        const date = new Date();
+
+        return postRef
+            .add({
+                title,
+                timestamp: date,
+            })
+            .then(function (ref) {
+                return ref.id;
+            });
+    };
+
+    return { Data, getContent, writeContent };
 }

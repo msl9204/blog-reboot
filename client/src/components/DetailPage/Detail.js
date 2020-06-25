@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import ReactMarkdown from "react-markdown";
+import ReactMarkdown from "react-markdown/with-html";
 import styled from "styled-components";
 import useDb from "../../hooks/useDb";
 import { useParams } from "react-router-dom";
@@ -39,15 +39,25 @@ const DetailContentsContents = styled.div``;
 
 export default function DetailPage() {
     const [Item, setItem] = useState("");
+    const [Data, setData] = useState(null);
     const { id } = useParams();
     const db = useDb();
     const storage = useStorage();
+    const reader = new FileReader();
 
     useEffect(() => {
         db.getContent(id).then((doc) => setItem(doc));
 
-        storage.getMdFile("myFile.txt");
+        storage.getMdFile(`${id}.txt`);
     }, []);
+
+    if (storage.Data) {
+        reader.onload = function () {
+            setData(reader.result);
+        };
+
+        reader.readAsText(storage.Data);
+    }
 
     return (
         <React.Fragment>
@@ -57,8 +67,8 @@ export default function DetailPage() {
                         <DetailTitleContents>{Item.title}</DetailTitleContents>
                     </DetailTitleContainer>
                     <DetailContentsContainer>
-                        <DetailContentsTime>Time</DetailContentsTime>
-                        <ReactMarkdown source={Item.content} />
+                        <DetailContentsTime>Date Info Area</DetailContentsTime>
+                        <ReactMarkdown source={Data} escapeHtml={false} />
                     </DetailContentsContainer>
                 </DetailContainer>
             )}

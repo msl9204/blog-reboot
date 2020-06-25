@@ -4,6 +4,7 @@ import ReactMarkdown from "react-markdown/with-html";
 import styled from "styled-components";
 import showdown from "showdown";
 
+import useDb from "../../hooks/useDb";
 import useStorage from "../../hooks/useStorage";
 
 const EditContainer = styled.div`
@@ -57,21 +58,27 @@ export default function EditPage() {
     const [Content, setContent] = useState("");
     const [Title, setTitle] = useState("");
 
-    const storage = useStorage("myFile.txt");
+    const db = useDb();
+    const storage = useStorage();
 
-    const saveToHtml = (html) => {
+    const saveToHtml = async () => {
         const converter = new showdown.Converter();
-        const result = converter.makeHtml(html);
+        const result = converter.makeHtml(Content);
 
-        const element = document.createElement("a");
         const file = new Blob([result], { type: "text/plain" });
-        console.log(file);
-        element.href = URL.createObjectURL(file);
-        element.download = "myFile.txt";
-        element.click();
+
+        return file;
     };
 
-    // <ReactMarkdown source={markdown} escapeHtml={false} />
+    const dataProcessing = async () => {
+        const file = await saveToHtml();
+
+        const sendData = { title: Title };
+
+        const getWrittenId = await db.writeContent(sendData);
+
+        storage.uploadMdfile(getWrittenId, file);
+    };
 
     return (
         <EditContainer>
@@ -92,7 +99,7 @@ export default function EditPage() {
                     <ReactMarkdown source={Content} />
                 </ShowField>
             </PreviewContainer>
-            <TestDownload onClick={() => saveToHtml(Content)}>
+            <TestDownload onClick={() => dataProcessing()}>
                 Download!
             </TestDownload>
         </EditContainer>
