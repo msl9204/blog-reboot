@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { firestore_db } from "../cloud/firebase_init";
 
 export default function useDb() {
-    const [Data, setData] = useState([]);
+    const getContentList = () => {
+        const postsRef = firestore_db.collection("posts");
 
-    const postsRef = firestore_db.collection("posts");
-
-    useEffect(() => {
-        postsRef
+        return postsRef
             .get()
             .then((snapshot) => {
                 if (snapshot.empty) {
@@ -15,12 +13,13 @@ export default function useDb() {
                     return;
                 }
 
-                setData(snapshot.docs);
+                return snapshot.docs;
             })
             .catch((err) => {
                 console.log("Error getting documents", err);
+                return;
             });
-    }, []);
+    };
 
     const getContent = (id) => {
         const postRef = firestore_db.collection("posts").doc(id);
@@ -39,9 +38,9 @@ export default function useDb() {
             });
     };
 
-    const writeContent = ({ title, content }) => {
+    const writeContent = ({ title }) => {
         const postRef = firestore_db.collection("posts");
-        const date = new Date();
+        const date = Date.now();
 
         return postRef
             .add({
@@ -53,5 +52,5 @@ export default function useDb() {
             });
     };
 
-    return { Data, getContent, writeContent };
+    return { getContentList, getContent, writeContent };
 }

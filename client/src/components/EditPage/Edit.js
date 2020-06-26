@@ -6,6 +6,7 @@ import showdown from "showdown";
 
 import useDb from "../../hooks/useDb";
 import useStorage from "../../hooks/useStorage";
+import { useHistory } from "react-router-dom";
 
 const EditContainer = styled.div`
     display: flex;
@@ -48,16 +49,27 @@ const PreviewContainer = styled.div`
 
 const ShowField = styled.div``;
 
-const TestDownload = styled.div`
+const ButtonContainer = styled.div`
+    display: flex;
+    align-self: flex-start;
+`;
+
+const UploadButton = styled.div`
+    margin: 50px 100px;
     width: 100px;
-    height: 100px;
-    border: 1px solid black;
+    height: 50px;
+    border-radius: 30px;
+    background: #3498db;
+    line-height: 45px;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
 `;
 
 export default function EditPage() {
     const [Content, setContent] = useState("");
     const [Title, setTitle] = useState("");
-
+    const history = useHistory();
     const db = useDb();
     const storage = useStorage();
 
@@ -72,36 +84,40 @@ export default function EditPage() {
 
     const dataProcessing = async () => {
         const file = await saveToHtml();
-
         const sendData = { title: Title };
 
         const getWrittenId = await db.writeContent(sendData);
-
         storage.uploadMdfile(getWrittenId, file);
+
+        history.push("/");
     };
 
     return (
-        <EditContainer>
-            <WriteContainer>
-                <InputField
-                    placeholder="title"
-                    value={Title}
-                    onChange={(e) => setTitle(e.target.value)}
-                />
-                <TypeField
-                    placeholder="Content"
-                    value={Content}
-                    onChange={(e) => setContent(e.target.value)}
-                />
-            </WriteContainer>
-            <PreviewContainer>
-                <ShowField>
-                    <ReactMarkdown source={Content} />
-                </ShowField>
-            </PreviewContainer>
-            <TestDownload onClick={() => dataProcessing()}>
-                Download!
-            </TestDownload>
-        </EditContainer>
+        <React.Fragment>
+            <EditContainer>
+                <WriteContainer>
+                    <InputField
+                        placeholder="title"
+                        value={Title}
+                        onChange={(e) => setTitle(e.target.value)}
+                    />
+                    <TypeField
+                        placeholder="Content"
+                        value={Content}
+                        onChange={(e) => setContent(e.target.value)}
+                    />
+                </WriteContainer>
+                <PreviewContainer>
+                    <ShowField>
+                        <ReactMarkdown source={Content} />
+                    </ShowField>
+                </PreviewContainer>
+            </EditContainer>
+            <ButtonContainer>
+                <UploadButton onClick={() => dataProcessing()}>
+                    쓰기
+                </UploadButton>
+            </ButtonContainer>
+        </React.Fragment>
     );
 }

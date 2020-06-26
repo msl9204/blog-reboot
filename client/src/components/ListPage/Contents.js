@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
 import useDb from "../../hooks/useDb";
 import { Link } from "react-router-dom";
+import moment from "moment";
 
 const hoverBar = keyframes`
     0%{opacity: 0}
@@ -55,34 +56,48 @@ const TimeElements = styled.div`
     color: gray;
 `;
 
-function RenderElements({ id, title, content }) {
+function RenderElements({ id, title, timestamp }) {
+    const UnixTimeToDate = (time) => {
+        return moment(time).calendar();
+    };
+
+    console.log(timestamp);
+
     return (
         <ContentsContainer to={`/detail/${id}`}>
             <ContentsContent>
                 <TitleElements>{title}</TitleElements>
-                <TimeElements>{content}</TimeElements>
+                <TimeElements>{UnixTimeToDate(timestamp)}</TimeElements>
             </ContentsContent>
         </ContentsContainer>
     );
 }
 
 export default function Contents() {
-    const { Data } = useDb();
+    const db = useDb();
+    const [Data, setData] = useState("");
 
-    // db.map((doc) => console.log(doc.id, doc.data()));
+    useEffect(() => {
+        const fetchData = async () => {
+            setData(await db.getContentList());
+        };
+
+        fetchData();
+    }, []);
 
     return (
         <React.Fragment>
-            {Data.map((doc) => {
-                return (
-                    <RenderElements
-                        key={doc.id}
-                        id={doc.id}
-                        title={doc.data().title}
-                        content={doc.data().content}
-                    />
-                );
-            })}
+            {Data &&
+                Data.map((doc) => {
+                    return (
+                        <RenderElements
+                            key={doc.id}
+                            id={doc.id}
+                            title={doc.data().title}
+                            timestamp={doc.data().timestamp}
+                        />
+                    );
+                })}
         </React.Fragment>
     );
 }

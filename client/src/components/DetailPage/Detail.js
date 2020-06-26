@@ -4,6 +4,7 @@ import styled from "styled-components";
 import useDb from "../../hooks/useDb";
 import { useParams } from "react-router-dom";
 import useStorage from "../../hooks/useStorage";
+import moment from "moment";
 
 const DetailContainer = styled.div`
     display: flex;
@@ -19,20 +20,21 @@ const DetailTitleContainer = styled.div`
     justify-content: center;
     align-items: center;
     width: 100%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 `;
 const DetailTitleContents = styled(ReactMarkdown)``;
 
 const DetailContentsContainer = styled.div`
     display: flex;
     flex-direction: column;
-    margin-top: 100px;
+    margin-top: 50px;
     width: 100%;
     height: auto;
-    border: 1px solid black;
 `;
 
 const DetailContentsTime = styled.div`
     margin-bottom: 50px;
+    color: #bdc3c7;
 `;
 
 const DetailContentsContents = styled.div``;
@@ -67,7 +69,9 @@ export default function DetailPage() {
                         <DetailTitleContents>{Item.title}</DetailTitleContents>
                     </DetailTitleContainer>
                     <DetailContentsContainer>
-                        <DetailContentsTime>Date Info Area</DetailContentsTime>
+                        <DetailContentsTime>
+                            {moment(Item.timestamp.seconds).calendar()}
+                        </DetailContentsTime>
                         <ReactMarkdown source={Data} escapeHtml={false} />
                     </DetailContentsContainer>
                 </DetailContainer>
