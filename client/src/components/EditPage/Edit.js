@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import ReactMarkdown from "react-markdown/with-html";
 
 import styled from "styled-components";
-import showdown from "showdown";
 
 import useDb from "../../hooks/useDb";
 import useStorage from "../../hooks/useStorage";
@@ -73,17 +72,14 @@ export default function EditPage() {
     const db = useDb();
     const storage = useStorage();
 
-    const saveToHtml = async () => {
-        const converter = new showdown.Converter();
-        const result = converter.makeHtml(Content);
-
-        const file = new Blob([result], { type: "text/plain" });
+    const saveTofile = async () => {
+        const file = new Blob([Content], { type: "text/plain" });
 
         return file;
     };
 
     const dataProcessing = async () => {
-        const file = await saveToHtml();
+        const file = await saveTofile();
         const sendData = { title: Title };
 
         const getWrittenId = await db.writeContent(sendData);

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown/with-html";
+
+import htmlParser from "react-markdown/plugins/html-parser";
 import styled from "styled-components";
 import useDb from "../../hooks/useDb";
 import { useParams } from "react-router-dom";
@@ -39,6 +41,53 @@ const DetailContentsTime = styled.div`
 
 const DetailContentsContents = styled.div``;
 
+function BreakLine(props) {
+    return (
+        <div
+            style={{
+                border: "1px solid #aaa",
+                borderRadius: 10,
+                paddingLeft: 10,
+                margin: 5,
+            }}
+        >
+            {props.children}
+        </div>
+    );
+}
+
+function BlockQuoteBlock(props) {
+    return (
+        <div
+            style={{
+                border: "1px dashed #aaa",
+                borderRadius: 10,
+                paddingLeft: 10,
+                margin: 5,
+            }}
+        >
+            {props.children}
+        </div>
+    );
+}
+
+function TableCellBlock(props) {
+    let style = {
+        textAlign: props.align ? props.align : "center",
+        padding: 5,
+    };
+
+    if (props.isHeader) {
+        style.border = "1px solid #ccc";
+        style.borderLeft = 0;
+        style.borderRight = 0;
+    } else {
+        style.borderButtom = "1px solid #eee";
+    }
+
+    return <td style={style}>{props.children}</td>;
+}
+
 export default function DetailPage() {
     const [Item, setItem] = useState("");
     const [Data, setData] = useState(null);
@@ -70,9 +119,16 @@ export default function DetailPage() {
                     </DetailTitleContainer>
                     <DetailContentsContainer>
                         <DetailContentsTime>
-                            {moment(Item.timestamp.seconds).calendar()}
+                            {moment(Item.timestamp).calendar()}
                         </DetailContentsTime>
-                        <ReactMarkdown source={Data} escapeHtml={false} />
+                        <ReactMarkdown
+                            source={Data}
+                            renderers={{
+                                blockquote: BlockQuoteBlock,
+                                thematicBreak: BreakLine,
+                                tableCell: TableCellBlock,
+                            }}
+                        />
                     </DetailContentsContainer>
                 </DetailContainer>
             )}
