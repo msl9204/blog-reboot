@@ -6,6 +6,7 @@ import styled from "styled-components";
 import GlobalStyle from "./styles/GlobalStyle";
 import EditPage from "./components/EditPage/Edit";
 import DetailPage from "./components/DetailPage/Detail";
+import AdminPage from "./components/AdminPage/admin";
 
 const PageContainer = styled.div`
     display: flex;
@@ -36,6 +37,10 @@ function App() {
                         <EditPage />
                         <GlobalStyle />
                     </PageContainer>
+                </Route>
+                <Route exact path="/admin/">
+                    <AdminPage />
+                    <GlobalStyle />
                 </Route>
             </Switch>
         </Router>
