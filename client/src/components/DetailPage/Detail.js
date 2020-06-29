@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown/with-html";
 
-import htmlParser from "react-markdown/plugins/html-parser";
 import styled from "styled-components";
 import useDb from "../../hooks/useDb";
 import { useParams } from "react-router-dom";
