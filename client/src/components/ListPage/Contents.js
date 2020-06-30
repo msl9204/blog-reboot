@@ -61,8 +61,6 @@ function RenderElements({ id, title, timestamp }) {
         return moment(time).calendar();
     };
 
-    console.log(timestamp);
-
     return (
         <ContentsContainer to={`/detail/${id}`}>
             <ContentsContent>
@@ -72,6 +70,7 @@ function RenderElements({ id, title, timestamp }) {
         </ContentsContainer>
     );
 }
+// 날짜순으로 정렬되게 하기
 
 export default function Contents() {
     const db = useDb();

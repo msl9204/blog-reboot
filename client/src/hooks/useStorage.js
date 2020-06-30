@@ -31,7 +31,14 @@ export default function useStorage() {
             console.log("Uploaded a blob or file!");
         });
     };
-    // 파일업로드하는 부분 해야함 20.06.25 firestore 문서 생성 후, storage에 id값을 어떻게 줄지???
 
-    return { Data, getMdFile, uploadMdfile };
+    const deleteMdfile = (fileName) => {
+        fileName.map((item) => {
+            const htmlRef = storage.child(`html/${item}.txt`);
+
+            htmlRef.delete();
+        });
+    };
+
+    return { Data, getMdFile, uploadMdfile, deleteMdfile };
 }

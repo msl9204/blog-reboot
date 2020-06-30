@@ -52,5 +52,12 @@ export default function useDb() {
             });
     };
 
-    return { getContentList, getContent, writeContent };
+    const deleteContent = (id) => {
+        id.map((item) => {
+            const postRef = firestore_db.collection("posts").doc(item);
+            postRef.delete();
+        });
+    };
+
+    return { getContentList, getContent, writeContent, deleteContent };
 }

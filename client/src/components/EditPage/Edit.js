@@ -85,7 +85,7 @@ export default function EditPage() {
         const getWrittenId = await db.writeContent(sendData);
         storage.uploadMdfile(getWrittenId, file);
 
-        history.push("/");
+        history.push("/admin");
     };
 
     return (
