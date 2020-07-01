@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled, { keyframes } from "styled-components";
 import useDb from "../../hooks/useDb";
+import useIntersect from "../../hooks/useIntersect";
 import { Link } from "react-router-dom";
 import moment from "moment";
 
@@ -27,6 +28,9 @@ const ContentsContainer = styled(Link)`
 
     text-decoration: none;
     color: black;
+
+    opacity: 0;
+    transform: translateX(0) translateY(50%) translateZ(0);
 
     &:hover {
         color: gray;
@@ -61,8 +65,10 @@ function RenderElements({ id, title, timestamp }) {
         return moment(time).calendar();
     };
 
+    const dom = useIntersect();
+
     return (
-        <ContentsContainer to={`/detail/${id}`}>
+        <ContentsContainer {...dom} to={`/detail/${id}`}>
             <ContentsContent>
                 <TitleElements>{title}</TitleElements>
                 <TimeElements>{UnixTimeToDate(timestamp)}</TimeElements>
