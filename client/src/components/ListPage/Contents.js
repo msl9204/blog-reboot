@@ -70,7 +70,7 @@ function RenderElements({ id, title, timestamp }) {
         </ContentsContainer>
     );
 }
-// 날짜순으로 정렬되게 하기
+// TODO : 날짜순으로 정렬되게 하기
 
 export default function Contents() {
     const db = useDb();

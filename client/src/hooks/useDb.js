@@ -5,6 +5,7 @@ export default function useDb() {
         const postsRef = firestore_db.collection("posts");
 
         return postsRef
+            .orderBy("timestamp", "desc")
             .get()
             .then((snapshot) => {
                 if (snapshot.empty) {
@@ -54,7 +55,7 @@ export default function useDb() {
     const editContent = (id, { title }) => {
         const postRef = firestore_db.collection("posts").doc(id);
         const date = Date.now();
-        postRef.set({
+        postRef.update({
             title,
             updated: date,
         });

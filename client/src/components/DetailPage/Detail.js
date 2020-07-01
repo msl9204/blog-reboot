@@ -3,7 +3,7 @@ import ReactMarkdown from "react-markdown/with-html";
 
 import styled from "styled-components";
 import useDb from "../../hooks/useDb";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import useStorage from "../../hooks/useStorage";
 import moment from "moment";
 
@@ -39,6 +39,20 @@ const DetailContentsTime = styled.div`
 `;
 
 // const DetailContentsContents = styled.div``;
+
+const GoListButton = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    right: 10vw;
+    bottom: 5vw;
+    background: #dfe6e9;
+    cursor: pointer;
+    width: 100px;
+    height: 60px;
+    border-radius: 30px;
+`;
 
 function BreakLine(props) {
     return (
@@ -89,6 +103,7 @@ function TableCellBlock(props) {
 
 export default function DetailPage() {
     const [Item, setItem] = useState("");
+    const history = useHistory();
     const { id } = useParams();
     const db = useDb();
     const storage = useStorage();
@@ -109,6 +124,9 @@ export default function DetailPage() {
                     <DetailContentsContainer>
                         <DetailContentsTime>
                             {moment(Item.timestamp).calendar()}
+                            {Item.updated &&
+                                `\u00A0\u00A0\u00A0/\u00A0\u00A0\u00A0(수정됨)\u00A0
+                                ${moment(Item.updated).calendar()}`}
                         </DetailContentsTime>
                         <ReactMarkdown
                             source={storage.Markdown}
@@ -121,6 +139,14 @@ export default function DetailPage() {
                     </DetailContentsContainer>
                 </DetailContainer>
             )}
+
+            <GoListButton
+                onClick={() => {
+                    history.push("/");
+                }}
+            >
+                <div>목록으로</div>
+            </GoListButton>
         </React.Fragment>
     );
 }

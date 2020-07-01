@@ -27,10 +27,8 @@ export default function useStorage() {
         const fileRef = htmlRef.child(fileName);
 
         fileRef.getDownloadURL().then(function (url) {
-            // `url` is the download URL for 'images/stars.jpg'
-
-            // This can be downloaded directly:
             const xhr = new XMLHttpRequest();
+
             xhr.responseType = "blob";
             xhr.onload = function (event) {
                 const blob = xhr.response;

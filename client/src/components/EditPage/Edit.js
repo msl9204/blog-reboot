@@ -34,7 +34,7 @@ const TypeField = styled.textarea`
 
     margin-top: 30px;
 
-    height: 500px;
+    height: 700px;
     font-size: 1rem;
     align-self: flex-start;
 `;
@@ -42,9 +42,13 @@ const TypeField = styled.textarea`
 const PreviewContainer = styled.div`
     width: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: start;
-    align-items: center;
+    border-left: 1px solid rgba(0, 0, 0, 0.2);
+    padding: 30px;
 `;
+
+const ShowTitle = styled.h1``;
 
 const ShowField = styled.div``;
 
@@ -54,7 +58,7 @@ const ButtonContainer = styled.div`
 `;
 
 const UploadButton = styled.div`
-    margin: 50px 100px;
+    margin: 30px 10px;
     width: 100px;
     height: 50px;
     border-radius: 30px;
@@ -63,6 +67,10 @@ const UploadButton = styled.div`
     text-align: center;
     vertical-align: middle;
     cursor: pointer;
+`;
+
+const CancelButton = styled(UploadButton)`
+    background: #ff7675;
 `;
 
 export default function EditPage() {
@@ -131,18 +139,22 @@ export default function EditPage() {
                         value={Content}
                         onChange={(e) => setContent(e.target.value)}
                     />
+                    <ButtonContainer>
+                        <UploadButton onClick={() => dataProcessing()}>
+                            쓰기
+                        </UploadButton>
+                        <CancelButton onClick={() => history.push("/admin")}>
+                            취소
+                        </CancelButton>
+                    </ButtonContainer>
                 </WriteContainer>
                 <PreviewContainer>
+                    <ShowTitle>{Title}</ShowTitle>
                     <ShowField>
                         <ReactMarkdown source={Content} />
                     </ShowField>
                 </PreviewContainer>
             </EditContainer>
-            <ButtonContainer>
-                <UploadButton onClick={() => dataProcessing()}>
-                    쓰기
-                </UploadButton>
-            </ButtonContainer>
         </React.Fragment>
     );
 }
