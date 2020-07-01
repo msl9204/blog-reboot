@@ -105,19 +105,19 @@ export default function AdminPage() {
     const [isVisible, setIsVisible] = useState(false);
     const [message, setMessage] = useState("");
     const [DataList, setDataList] = useState(null);
-    const [ButtonCheck, setButtonCheck] = useState(0);
+
     const history = useHistory();
 
     const fetchData = async () => {
         const data = await db.getContentList();
         setDataList(data);
     };
-    console.log(ButtonCheck);
+
     useEffect(() => {
         SelectList = [];
 
         fetchData();
-    }, [ButtonCheck]);
+    }, []);
 
     async function checkModalRender(list, type = "edit") {
         if (list.length === 0) {
@@ -132,7 +132,10 @@ export default function AdminPage() {
             if (type === "delete") {
                 await db.deleteContent(list);
                 await storage.deleteMdfile(list);
-                await setButtonCheck((prev) => prev + 1);
+
+                setTimeout(() => {
+                    fetchData();
+                }, 1000);
             }
         }
     }
