@@ -130,12 +130,16 @@ export default function AdminPage() {
             // 조건에 문제가 없을 때 처리 => TODO : 삭제 되었을 때, 리스트를 다시 불러와야함.
             // 리스트 불러오는거 처리 어떻게 해야함.
             if (type === "delete") {
+                // 삭제버튼 누르는 경우 처리사항.
                 await db.deleteContent(list);
                 await storage.deleteMdfile(list);
 
                 setTimeout(() => {
                     fetchData();
                 }, 1000);
+            } else {
+                // 수정버튼 누르는 경우 처리사항.
+                history.push(`/edit/${list[0]}`);
             }
         }
     }
@@ -154,7 +158,7 @@ export default function AdminPage() {
             <ButtonContainer>
                 <WriteButton
                     onClick={() => {
-                        history.push("/edit");
+                        history.push("/write");
                     }}
                 >
                     <span>글 쓰기</span>

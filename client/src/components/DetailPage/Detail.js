@@ -38,7 +38,7 @@ const DetailContentsTime = styled.div`
     color: #bdc3c7;
 `;
 
-const DetailContentsContents = styled.div``;
+// const DetailContentsContents = styled.div``;
 
 function BreakLine(props) {
     return (
@@ -89,25 +89,15 @@ function TableCellBlock(props) {
 
 export default function DetailPage() {
     const [Item, setItem] = useState("");
-    const [Data, setData] = useState(null);
     const { id } = useParams();
     const db = useDb();
     const storage = useStorage();
-    const reader = new FileReader();
 
     useEffect(() => {
         db.getContent(id).then((doc) => setItem(doc));
 
         storage.getMdFile(`${id}.txt`);
-    }, []);
-
-    if (storage.Data) {
-        reader.onload = function () {
-            setData(reader.result);
-        };
-
-        reader.readAsText(storage.Data);
-    }
+    }, [id]);
 
     return (
         <React.Fragment>
@@ -121,7 +111,7 @@ export default function DetailPage() {
                             {moment(Item.timestamp).calendar()}
                         </DetailContentsTime>
                         <ReactMarkdown
-                            source={Data}
+                            source={storage.Markdown}
                             renderers={{
                                 blockquote: BlockQuoteBlock,
                                 thematicBreak: BreakLine,

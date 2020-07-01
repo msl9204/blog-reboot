@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown/with-html";
 
 import styled from "styled-components";
 
 import useDb from "../../hooks/useDb";
 import useStorage from "../../hooks/useStorage";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 
 const EditContainer = styled.div`
     display: flex;
@@ -68,6 +68,7 @@ const UploadButton = styled.div`
 export default function EditPage() {
     const [Content, setContent] = useState("");
     const [Title, setTitle] = useState("");
+    const { id } = useParams();
     const history = useHistory();
     const db = useDb();
     const storage = useStorage();
@@ -78,12 +79,40 @@ export default function EditPage() {
         return file;
     };
 
+    const forEditFetchData = async (id) => {
+        if (id) {
+            // 수정하는 경우,
+            const Data = await db.getContent(id);
+            storage.getMdFile(`${id}.txt`);
+
+            setTitle(Data.title);
+        } else {
+            // 새로작성하는 경우
+            return;
+        }
+    };
+    // 이런부분 redux로 구현하면 편할듯
+    useEffect(() => {
+        setContent(storage.Markdown);
+    }, [storage.Markdown]);
+
+    useEffect(() => {
+        forEditFetchData(id);
+    }, [id]);
+
     const dataProcessing = async () => {
         const file = await saveTofile();
         const sendData = { title: Title };
 
-        const getWrittenId = await db.writeContent(sendData);
-        storage.uploadMdfile(getWrittenId, file);
+        if (id) {
+            // 수정하는 경우,
+            await db.editContent(id, sendData);
+            storage.uploadMdfile(id, file);
+        } else {
+            // 새로작성하는 경우,
+            const getWrittenId = await db.writeContent(sendData);
+            storage.uploadMdfile(getWrittenId, file);
+        }
 
         history.push("/admin");
     };

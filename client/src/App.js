@@ -32,7 +32,13 @@ function App() {
                         <GlobalStyle />
                     </PageContainer>
                 </Route>
-                <Route exact path="/edit/">
+                <Route exact path="/write/">
+                    <PageContainer>
+                        <EditPage />
+                        <GlobalStyle />
+                    </PageContainer>
+                </Route>
+                <Route exact path="/edit/:id">
                     <PageContainer>
                         <EditPage />
                         <GlobalStyle />

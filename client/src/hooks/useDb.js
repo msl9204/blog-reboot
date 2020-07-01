@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { firestore_db } from "../cloud/firebase_init";
 
 export default function useDb() {
@@ -52,12 +51,27 @@ export default function useDb() {
             });
     };
 
+    const editContent = (id, { title }) => {
+        const postRef = firestore_db.collection("posts").doc(id);
+        const date = Date.now();
+        postRef.set({
+            title,
+            updated: date,
+        });
+    };
+
     const deleteContent = (id) => {
-        id.map((item) => {
+        id.forEach((item) => {
             const postRef = firestore_db.collection("posts").doc(item);
             postRef.delete();
         });
     };
 
-    return { getContentList, getContent, writeContent, deleteContent };
+    return {
+        getContentList,
+        getContent,
+        writeContent,
+        deleteContent,
+        editContent,
+    };
 }

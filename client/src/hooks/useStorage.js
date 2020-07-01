@@ -1,10 +1,26 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import { firebase_storage } from "../cloud/firebase_init";
 
 export default function useStorage() {
+    const reader = new FileReader();
     const storage = firebase_storage.ref();
     const [Data, setData] = useState(null);
+    const [Markdown, setMarkdown] = useState(null);
+
+    async function BlobToMarkdown() {
+        if (Data) {
+            reader.onload = function () {
+                setMarkdown(reader.result);
+            };
+
+            reader.readAsText(Data);
+        }
+    }
+
+    useEffect(() => {
+        BlobToMarkdown();
+    });
 
     const getMdFile = (fileName) => {
         const htmlRef = storage.child("html");
@@ -33,12 +49,12 @@ export default function useStorage() {
     };
 
     const deleteMdfile = (fileName) => {
-        fileName.map((item) => {
+        fileName.forEach((item) => {
             const htmlRef = storage.child(`html/${item}.txt`);
 
             htmlRef.delete();
         });
     };
 
-    return { Data, getMdFile, uploadMdfile, deleteMdfile };
+    return { Markdown, getMdFile, uploadMdfile, deleteMdfile };
 }
