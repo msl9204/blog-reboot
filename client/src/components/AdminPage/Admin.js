@@ -1,10 +1,54 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import ModalPortal from "../Modal/ModalPortal";
 import Modal from "../Modal/Modal";
 import { useHistory } from "react-router-dom";
 import useDb from "../../hooks/useDb";
 import useStorage from "../../hooks/useStorage";
+import { useAuth } from "../../hooks/useAuth";
+
+const SpinnerAnimation = keyframes`
+0%,
+  100% {
+    box-shadow: 0 -3em 0 0.2em, 2em -2em 0 0em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 0;
+  }
+  12.5% {
+    box-shadow: 0 -3em 0 0, 2em -2em 0 0.2em, 3em 0 0 0, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 -1em;
+  }
+  25% {
+    box-shadow: 0 -3em 0 -0.5em, 2em -2em 0 0, 3em 0 0 0.2em, 2em 2em 0 0, 0 3em 0 -1em, -2em 2em 0 -1em, -3em 0 0 -1em, -2em -2em 0 -1em;
+  }
+  37.5% {
+    box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0em 0 0, 2em 2em 0 0.2em, 0 3em 0 0em, -2em 2em 0 -1em, -3em 0em 0 -1em, -2em -2em 0 -1em;
+  }
+  50% {
+    box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 0em, 0 3em 0 0.2em, -2em 2em 0 0, -3em 0em 0 -1em, -2em -2em 0 -1em;
+  }
+  62.5% {
+    box-shadow: 0 -3em 0 -1em, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 0, -2em 2em 0 0.2em, -3em 0 0 0, -2em -2em 0 -1em;
+  }
+  75% {
+    box-shadow: 0em -3em 0 -1em, 2em -2em 0 -1em, 3em 0em 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 0, -3em 0em 0 0.2em, -2em -2em 0 0;
+  }
+  87.5% {
+    box-shadow: 0em -3em 0 0, 2em -2em 0 -1em, 3em 0 0 -1em, 2em 2em 0 -1em, 0 3em 0 -1em, -2em 2em 0 0, -3em 0em 0 0, -2em -2em 0 0.2em;
+
+`;
+
+const SpinLoader = styled.div`
+    color: #badc58;
+    font-size: 15px;
+    margin: 100px auto;
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    position: relative;
+    text-indent: -9999em;
+    animation: ${SpinnerAnimation} 1.3s infinite linear;
+    transform: translateZ(0);
+    transform: translateZ(0);
+    transform: translateZ(0);
+`;
 
 const AdminPageContainer = styled.div`
     display: flex;
@@ -81,6 +125,37 @@ const MoveToDetail = styled.div`
 
 let SelectList = [];
 
+const LoadingSpinner = () => {
+    return (
+        <AdminPageContainer style={{ width: "100vw", height: "90vh" }}>
+            <SpinLoader></SpinLoader>
+        </AdminPageContainer>
+    );
+};
+
+const LoadAndNotLoginRender = ({ history }) => {
+    const [Timer, setTimer] = useState(false);
+
+    useEffect(() => {
+        const LoginWaitUnSubscribe = setTimeout(() => setTimer(true), 5000);
+        const RedirectWaitUnSubscribe = setTimeout(
+            () => history.push("/login"),
+            7000
+        );
+
+        return () => {
+            clearTimeout(LoginWaitUnSubscribe);
+            clearTimeout(RedirectWaitUnSubscribe);
+        };
+    }, []);
+
+    if (Timer) {
+        return <div>관리자 페이지는 로그인이 필요합니다!</div>;
+    } else {
+        return <LoadingSpinner />;
+    }
+};
+
 const RenderLists = ({ id, item, history, tabColor }) => {
     const [isCheck, setIsCheck] = useState(false);
 
@@ -121,10 +196,11 @@ const RenderLists = ({ id, item, history, tabColor }) => {
 // 글 삭제는 여러개 선택가능 하고, 글 수정은 하나만 선택해야함. (여러개 선택 시 modal 띄워서 재선택하게) => Done
 // 체크유무에 따라 reference 처리 어떻게 할지 생각해보기. => 해야함. 선택한 reference들 가져오기 => reference랑 상관있나?? 그냥 isCheck true 인것들 id값 list에 저장해두고, false이면 pop 시키면 될듯?? => Done
 // TODO : 날짜순으로 정렬되게 하기. 메인List랑 같은 기능. => Done (useDb에서 list 불러오는 곳에서 정렬해서 불러옴.)
-// TODO : admin 페이지 권한 있는 사람만 접근할 수 있도록 해야함.
+// TODO : admin 페이지 권한 있는 사람만 접근할 수 있도록 해야함. 먼저 로그인 페이지 먼저 만들기. 그리고 auth 설정 불러와서 권한부여해보기.
 
 export default function AdminPage() {
     const db = useDb();
+    const auth = useAuth();
     const storage = useStorage();
     const [isVisible, setIsVisible] = useState(false);
     const [message, setMessage] = useState("");
@@ -139,7 +215,6 @@ export default function AdminPage() {
 
     useEffect(() => {
         SelectList = [];
-
         setTimeout(() => {
             fetchData();
         }, 1000);
@@ -170,57 +245,63 @@ export default function AdminPage() {
         }
     }
 
-    return (
-        <AdminPageContainer
-            onClick={(event) => {
-                if (
-                    isVisible &&
-                    !event.target.classList.contains("modal-class")
-                ) {
-                    setIsVisible((prev) => !prev);
-                }
-            }}
-        >
-            <ButtonContainer>
-                <WriteButton
-                    onClick={() => {
-                        history.push("/write");
-                    }}
-                >
-                    <span>글 쓰기</span>
-                </WriteButton>
-                <EditButton
-                    onClick={() => {
-                        checkModalRender(SelectList);
-                    }}
-                >
-                    <span>글 수정</span>
-                </EditButton>
-                <DeleteButton
-                    onClick={() => {
-                        checkModalRender(SelectList, "delete");
-                    }}
-                >
-                    <span>글 삭제</span>
-                </DeleteButton>
-            </ButtonContainer>
-            <ListContainer>
-                {DataList &&
-                    DataList.map((item) => {
-                        return (
-                            <RenderLists
-                                key={item.id}
-                                id={item.id}
-                                item={item.data().title}
-                                history={history}
-                                tabColor={DataList.indexOf(item) % 2}
-                            />
-                        );
-                    })}
-            </ListContainer>
-            <ModalPortal>
-                <Modal isVisible={isVisible} message={message} />
-            </ModalPortal>
-        </AdminPageContainer>
-    );
+    if (auth.user) {
+        return (
+            <AdminPageContainer
+                onClick={(event) => {
+                    if (
+                        isVisible &&
+                        !event.target.classList.contains("modal-class")
+                    ) {
+                        setIsVisible((prev) => !prev);
+                    }
+                }}
+            >
+                <ButtonContainer>
+                    <WriteButton
+                        onClick={() => {
+                            history.push("/write");
+                        }}
+                    >
+                        <span>글 쓰기</span>
+                    </WriteButton>
+                    <EditButton
+                        onClick={(event) => {
+                            checkModalRender(SelectList);
+                            event.preventDefault();
+                        }}
+                    >
+                        <span>글 수정</span>
+                    </EditButton>
+                    <DeleteButton
+                        onClick={(event) => {
+                            checkModalRender(SelectList, "delete");
+                        }}
+                    >
+                        <span>글 삭제</span>
+                    </DeleteButton>
+                </ButtonContainer>
+
+                <ListContainer>
+                    {DataList &&
+                        DataList.map((item) => {
+                            return (
+                                <RenderLists
+                                    key={item.id}
+                                    id={item.id}
+                                    item={item.data().title}
+                                    history={history}
+                                    tabColor={DataList.indexOf(item) % 2}
+                                />
+                            );
+                        })}
+                </ListContainer>
+                <ModalPortal>
+                    <Modal isVisible={isVisible} message={message} />
+                </ModalPortal>
+            </AdminPageContainer>
+        );
+    } else {
+        return <LoadAndNotLoginRender history={history} />;
+    }
 }

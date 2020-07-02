@@ -7,6 +7,8 @@ import GlobalStyle from "./styles/GlobalStyle";
 import EditPage from "./components/EditPage/Edit";
 import DetailPage from "./components/DetailPage/Detail";
 import AdminPage from "./components/AdminPage/Admin";
+import AdminLogin from "./components/AdminPage/AdminLogin";
+import { ProvideAuth } from "./hooks/useAuth";
 
 const PageContainer = styled.div`
     display: flex;
@@ -44,9 +46,19 @@ function App() {
                         <GlobalStyle />
                     </PageContainer>
                 </Route>
+                <Route exact path="/login/">
+                    <PageContainer>
+                        <ProvideAuth>
+                            <AdminLogin />
+                            <GlobalStyle />
+                        </ProvideAuth>
+                    </PageContainer>
+                </Route>
                 <Route exact path="/admin/">
-                    <AdminPage />
-                    <GlobalStyle />
+                    <ProvideAuth>
+                        <AdminPage />
+                        <GlobalStyle />
+                    </ProvideAuth>
                 </Route>
             </Switch>
         </Router>
