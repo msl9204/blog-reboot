@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.js": "/blog-reboot/static/js/main.aaf2a923.chunk.js",
-    "main.js.map": "/blog-reboot/static/js/main.aaf2a923.chunk.js.map",
+    "main.js": "/blog-reboot/static/js/main.8bdd6307.chunk.js",
+    "main.js.map": "/blog-reboot/static/js/main.8bdd6307.chunk.js.map",
     "runtime-main.js": "/blog-reboot/static/js/runtime-main.e5412e25.js",
     "runtime-main.js.map": "/blog-reboot/static/js/runtime-main.e5412e25.js.map",
     "static/js/2.efd7376d.chunk.js": "/blog-reboot/static/js/2.efd7376d.chunk.js",
     "static/js/2.efd7376d.chunk.js.map": "/blog-reboot/static/js/2.efd7376d.chunk.js.map",
     "index.html": "/blog-reboot/index.html",
-    "precache-manifest.ac00ad8a562be4437a6fdd8d625f73ef.js": "/blog-reboot/precache-manifest.ac00ad8a562be4437a6fdd8d625f73ef.js",
+    "precache-manifest.f1b06506d8c5cb59ca56d0e0a15b54b6.js": "/blog-reboot/precache-manifest.f1b06506d8c5cb59ca56d0e0a15b54b6.js",
     "service-worker.js": "/blog-reboot/service-worker.js",
     "static/js/2.efd7376d.chunk.js.LICENSE.txt": "/blog-reboot/static/js/2.efd7376d.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.e5412e25.js",
     "static/js/2.efd7376d.chunk.js",
-    "static/js/main.aaf2a923.chunk.js"
+    "static/js/main.8bdd6307.chunk.js"
   ]
 }
