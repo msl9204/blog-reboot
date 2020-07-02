@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.js": "/MarkdownBlog/static/js/main.00cd6172.chunk.js",
-    "main.js.map": "/MarkdownBlog/static/js/main.00cd6172.chunk.js.map",
-    "runtime-main.js": "/MarkdownBlog/static/js/runtime-main.e586a72a.js",
-    "runtime-main.js.map": "/MarkdownBlog/static/js/runtime-main.e586a72a.js.map",
-    "static/js/2.6a1d4d43.chunk.js": "/MarkdownBlog/static/js/2.6a1d4d43.chunk.js",
-    "static/js/2.6a1d4d43.chunk.js.map": "/MarkdownBlog/static/js/2.6a1d4d43.chunk.js.map",
-    "index.html": "/MarkdownBlog/index.html",
-    "precache-manifest.80172cb451751d88193b8239f8c717e2.js": "/MarkdownBlog/precache-manifest.80172cb451751d88193b8239f8c717e2.js",
-    "service-worker.js": "/MarkdownBlog/service-worker.js",
-    "static/js/2.6a1d4d43.chunk.js.LICENSE.txt": "/MarkdownBlog/static/js/2.6a1d4d43.chunk.js.LICENSE.txt"
+    "main.js": "/blog/static/js/main.00cd6172.chunk.js",
+    "main.js.map": "/blog/static/js/main.00cd6172.chunk.js.map",
+    "runtime-main.js": "/blog/static/js/runtime-main.018dd818.js",
+    "runtime-main.js.map": "/blog/static/js/runtime-main.018dd818.js.map",
+    "static/js/2.debbc473.chunk.js": "/blog/static/js/2.debbc473.chunk.js",
+    "static/js/2.debbc473.chunk.js.map": "/blog/static/js/2.debbc473.chunk.js.map",
+    "index.html": "/blog/index.html",
+    "precache-manifest.c2c58840d199698adbb00f0bd6eba9f4.js": "/blog/precache-manifest.c2c58840d199698adbb00f0bd6eba9f4.js",
+    "service-worker.js": "/blog/service-worker.js",
+    "static/js/2.debbc473.chunk.js.LICENSE.txt": "/blog/static/js/2.debbc473.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.e586a72a.js",
-    "static/js/2.6a1d4d43.chunk.js",
+    "static/js/runtime-main.018dd818.js",
+    "static/js/2.debbc473.chunk.js",
     "static/js/main.00cd6172.chunk.js"
   ]
 }
