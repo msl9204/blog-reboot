@@ -18,7 +18,7 @@ const PageContainer = styled.div`
 
 function App() {
     return (
-        <Router>
+        <Router basename="/blog-reboot">
             <Switch>
                 <Route exact path="/">
                     <PageContainer>
