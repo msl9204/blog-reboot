@@ -20,7 +20,7 @@ Following items are core frontend technologies used in this project:
 ### Feature
 #### MarkDown Editor
  ![pagePreview](https://user-images.githubusercontent.com/52311764/86374507-9b63b600-bcbf-11ea-9e50-51a604d0452c.gif)
-#### 게시글 관리도구
+#### 게시글 관리도구 (Admin Page)
 ##### Edit
 ![edit](https://user-images.githubusercontent.com/52311764/86374516-9dc61000-bcbf-11ea-9d96-c830e2893bef.gif)
 ##### Delete
