@@ -10,7 +10,7 @@ Following items are core frontend technologies used in this project:
 
 
 ### Server
-Following items are core frontend technologies used in this project:
+Following items are core backend technologies used in this project:
 * FireBase Auth/Firestore/Storage
 
 ### [Deploy](https://express-ef393.web.app/)
